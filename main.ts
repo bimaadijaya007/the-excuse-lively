@@ -17,6 +17,13 @@ function validate(line) {
   if (line.includes("\n") || line.includes("\r")) {
     throw new Error("entry line must be a single line");
   }
+  if (line !== line.trim()) {
+    throw new Error("entry line must not start or end with whitespace");
+  }
+  const bytes = Buffer.byteLength(line, "utf8");
+  if (bytes < 1 || bytes > 400) {
+    throw new Error(`entry line is ${bytes} bytes, outside the 1-400 byte range`);
+  }
 }
 
 function main() {
